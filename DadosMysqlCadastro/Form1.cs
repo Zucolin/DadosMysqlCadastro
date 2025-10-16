@@ -16,9 +16,11 @@ namespace DadosMysqlCadastro
     {
         private MySqlConnection Conexao;
         private string data_source = "datasource=localhost;username=root;password=09876612vini;database=db_dados";
+        private int ?id_usuario_selecionado = null;
         public Form1()
         {
             InitializeComponent();
+
 
             listusuario.View = View.Details;
             listusuario.LabelEdit = true;
@@ -26,11 +28,28 @@ namespace DadosMysqlCadastro
             listusuario.FullRowSelect = true;
             listusuario.GridLines= true;
             listusuario.Columns.Add("ID", 30, HorizontalAlignment.Left);
-            listusuario.Columns.Add("Nome", 30, HorizontalAlignment.Left);
-            listusuario.Columns.Add("E-mail", 30, HorizontalAlignment.Left);
-            listusuario.Columns.Add("Senha", 30, HorizontalAlignment.Left);
-        }
+            listusuario.Columns.Add("Nome", 150, HorizontalAlignment.Left);
+            listusuario.Columns.Add("E-mail", 200, HorizontalAlignment.Left);
+            listusuario.Columns.Add("Senha", 100, HorizontalAlignment.Left);
 
+            carregar_usuarios();
+        }
+        private void listusuario_ItemSelectionChanged(object sender, ListViewItemSelectionChangedEventArgs e)
+        {
+            if (listusuario.SelectedItems.Count == 0)
+                return;
+            ListView.SelectedListViewItemCollection itens_selecionados = listusuario.SelectedItems;
+
+            foreach (ListViewItem item in itens_selecionados)
+            {
+                id_usuario_selecionado = Convert.ToInt32(item.SubItems[0].Text);
+
+                textnome.Text = item.SubItems[1].Text;
+                textemail.Text = item.SubItems[2].Text;
+                textsenha.Text = item.SubItems[3].Text;
+
+            }
+        }
         private void botao_Click(object sender, EventArgs e)
         {
             try
@@ -40,21 +59,93 @@ namespace DadosMysqlCadastro
                 MySqlCommand cmd = new MySqlCommand();
                 cmd.Connection = Conexao;
 
-                cmd.CommandText = "INSERT INTO usuario (nome, email, senha) " +
-                    "VALUES " +
-                    "(@nome, @email, @senha) ";
+                if(id_usuario_selecionado == null)
+                {
+                    cmd.CommandText = "INSERT INTO usuario (nome, email, senha) " +
+                        "VALUES " +
+                        "(@nome, @email, @senha) ";
 
 
-                cmd.Parameters.AddWithValue("@nome", textnome.Text);
-                cmd.Parameters.AddWithValue("@email", textemail.Text);
-                cmd.Parameters.AddWithValue("@senha", textsenha.Text);
+                    cmd.Parameters.AddWithValue("@nome", textnome.Text);
+                    cmd.Parameters.AddWithValue("@email", textemail.Text);
+                    cmd.Parameters.AddWithValue("@senha", textsenha.Text);
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Contato Inserido com Sucesso!",
+                        "Sucesso!", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+                else
+                {
+                    cmd.CommandText = "UPDATE usuario SET nome=@nome, email=@email, senha=@senha WHERE id=@id ";
+
+
+                    cmd.Parameters.AddWithValue("@nome", textnome.Text);
+                    cmd.Parameters.AddWithValue("@email", textemail.Text);
+                    cmd.Parameters.AddWithValue("@senha", textsenha.Text);
+                    cmd.Parameters.AddWithValue("@id", id_usuario_selecionado);
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
+
+                    MessageBox.Show("Contato Atualizado com sucesso!",
+                        "Sucesso!", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+                }
+
+
+                textnome.Clear();
+                textemail.Clear();
+                textsenha.Clear();
+
+                id_usuario_selecionado = null;
+
+                carregar_usuarios();
+
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Erro" + ex.Number + " ocorrido: " + ex.Message,
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ocorrido: " + ex.Message,
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { Conexao.Close(); }
+        }
+
+        private void carregar_usuarios()
+        {
+            try
+            {
+                Conexao = new MySqlConnection(data_source);
+                Conexao.Open();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = Conexao;
+                cmd.CommandText = "SELECT * FROM usuario ORDER BY id DESC ";
                 cmd.Prepare();
-                cmd.ExecuteNonQuery();
 
-                MessageBox.Show("Contato Inserido com Sucesso!",
-                    "Sucesso!", MessageBoxButtons.OK,
-                    MessageBoxIcon.Information);
+                MySqlDataReader reader = cmd.ExecuteReader();
 
+                listusuario.Items.Clear();
+
+                while (reader.Read())
+                {
+                    string[] row =
+                    {
+                        reader.GetInt32(0).ToString(),
+                        reader.GetString(1),
+                        reader.GetString(2),
+                        reader.GetString(3),
+
+                    };
+                    listusuario.Items.Add(new ListViewItem(row));
+
+
+                }
             }
             catch (MySqlException ex)
             {
@@ -73,15 +164,16 @@ namespace DadosMysqlCadastro
         {
             try
             {
-                string q = "'%"+ textbusca.Text +"%'"; 
                 Conexao = new MySqlConnection(data_source);
-
-                string sql = "SELECT * " +
-                    "FROM usuario " +
-                    "WHERE nome LIKE " + q + " OR email LIKE" + q;
                 Conexao.Open();
-                MySqlCommand comando = new MySqlCommand(sql, Conexao);
-                MySqlDataReader reader = comando.ExecuteReader();
+
+                MySqlCommand cmd = new MySqlCommand();
+                cmd.Connection = Conexao;
+                cmd.Parameters.AddWithValue("@q", "%" + textbusca.Text + "%");
+                cmd.CommandText = "SELECT * FROM usuario WHERE nome LIKE @q OR email LIKE @q";
+                cmd.Prepare();
+
+                MySqlDataReader reader = cmd.ExecuteReader();
 
                 listusuario.Items.Clear();
 
@@ -95,16 +187,34 @@ namespace DadosMysqlCadastro
                         reader.GetString(3),
 
                     };
-                    var linha_listview = new ListViewItem(row);
-                    listusuario.Items.Add(linha_listview);
+                    listusuario.Items.Add(new ListViewItem(row));
 
 
                 }
             }
-            catch(Exception ex) 
+            catch (MySqlException ex)
             {
-                MessageBox.Show(ex.Message);
-            } finally { Conexao.Close();}
+                MessageBox.Show("Erro" + ex.Number + " ocorrido: " + ex.Message,
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ocorrido: " + ex.Message,
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally { Conexao.Close(); }
+        }
+
+        private void botaonovo_Click(object sender, EventArgs e)
+        {
+            id_usuario_selecionado = null;
+            
+            textnome.Text= String.Empty;
+            textnome.Text = "";
+            textemail.Text = "";
+            textsenha.Text = "";
+
+            textnome.Focus();
         }
     }
 }

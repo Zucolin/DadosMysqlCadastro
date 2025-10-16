@@ -41,6 +41,7 @@
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.buscarbotao = new System.Windows.Forms.Button();
+            this.botaonovo = new System.Windows.Forms.Button();
             this.SuspendLayout();
             // 
             // labelnome
@@ -98,7 +99,7 @@
             this.botao.Name = "botao";
             this.botao.Size = new System.Drawing.Size(250, 46);
             this.botao.TabIndex = 6;
-            this.botao.Text = "Cadastrar";
+            this.botao.Text = "Enviar";
             this.botao.UseVisualStyleBackColor = false;
             this.botao.Click += new System.EventHandler(this.botao_Click);
             // 
@@ -121,16 +122,18 @@
             // listusuario
             // 
             this.listusuario.HideSelection = false;
-            this.listusuario.Location = new System.Drawing.Point(472, 165);
+            this.listusuario.Location = new System.Drawing.Point(454, 121);
+            this.listusuario.MultiSelect = false;
             this.listusuario.Name = "listusuario";
-            this.listusuario.Size = new System.Drawing.Size(422, 243);
+            this.listusuario.Size = new System.Drawing.Size(629, 524);
             this.listusuario.TabIndex = 9;
             this.listusuario.UseCompatibleStateImageBehavior = false;
+            this.listusuario.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listusuario_ItemSelectionChanged);
             // 
             // buscarbotao
             // 
             this.buscarbotao.BackColor = System.Drawing.Color.YellowGreen;
-            this.buscarbotao.Location = new System.Drawing.Point(634, 112);
+            this.buscarbotao.Location = new System.Drawing.Point(938, 69);
             this.buscarbotao.Name = "buscarbotao";
             this.buscarbotao.Size = new System.Drawing.Size(101, 34);
             this.buscarbotao.TabIndex = 10;
@@ -138,11 +141,23 @@
             this.buscarbotao.UseVisualStyleBackColor = false;
             this.buscarbotao.Click += new System.EventHandler(this.buscarbotao_Click);
             // 
+            // botaonovo
+            // 
+            this.botaonovo.BackColor = System.Drawing.Color.YellowGreen;
+            this.botaonovo.Location = new System.Drawing.Point(98, 422);
+            this.botaonovo.Name = "botaonovo";
+            this.botaonovo.Size = new System.Drawing.Size(250, 46);
+            this.botaonovo.TabIndex = 11;
+            this.botaonovo.Text = "Novo";
+            this.botaonovo.UseVisualStyleBackColor = false;
+            this.botaonovo.Click += new System.EventHandler(this.botaonovo_Click);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(959, 426);
+            this.ClientSize = new System.Drawing.Size(1095, 657);
+            this.Controls.Add(this.botaonovo);
             this.Controls.Add(this.buscarbotao);
             this.Controls.Add(this.listusuario);
             this.Controls.Add(this.textbusca);
@@ -176,6 +191,7 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker1;
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.Button buscarbotao;
+        private System.Windows.Forms.Button botaonovo;
     }
 }
 
