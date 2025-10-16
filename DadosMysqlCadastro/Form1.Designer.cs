@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             this.labelnome = new System.Windows.Forms.Label();
             this.textnome = new System.Windows.Forms.TextBox();
             this.emaillabel = new System.Windows.Forms.Label();
@@ -42,6 +43,10 @@
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.buscarbotao = new System.Windows.Forms.Button();
             this.botaonovo = new System.Windows.Forms.Button();
+            this.botaoexcluir = new System.Windows.Forms.Button();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuexcluir = new System.Windows.Forms.ToolStripMenuItem();
+            this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
             // labelnome
@@ -121,6 +126,7 @@
             // 
             // listusuario
             // 
+            this.listusuario.ContextMenuStrip = this.contextMenuStrip1;
             this.listusuario.HideSelection = false;
             this.listusuario.Location = new System.Drawing.Point(454, 121);
             this.listusuario.MultiSelect = false;
@@ -152,11 +158,38 @@
             this.botaonovo.UseVisualStyleBackColor = false;
             this.botaonovo.Click += new System.EventHandler(this.botaonovo_Click);
             // 
+            // botaoexcluir
+            // 
+            this.botaoexcluir.BackColor = System.Drawing.Color.FromArgb(((int)(((byte)(192)))), ((int)(((byte)(0)))), ((int)(((byte)(0)))));
+            this.botaoexcluir.ForeColor = System.Drawing.SystemColors.ButtonHighlight;
+            this.botaoexcluir.Location = new System.Drawing.Point(98, 500);
+            this.botaoexcluir.Name = "botaoexcluir";
+            this.botaoexcluir.Size = new System.Drawing.Size(250, 46);
+            this.botaoexcluir.TabIndex = 12;
+            this.botaoexcluir.Text = "Excluir";
+            this.botaoexcluir.UseVisualStyleBackColor = false;
+            // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuexcluir});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(176, 28);
+            // 
+            // menuexcluir
+            // 
+            this.menuexcluir.Name = "menuexcluir";
+            this.menuexcluir.Size = new System.Drawing.Size(175, 24);
+            this.menuexcluir.Text = "Excluir Usuario";
+            this.menuexcluir.Click += new System.EventHandler(this.menuexcluir_Click_1);
+            // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 16F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(1095, 657);
+            this.Controls.Add(this.botaoexcluir);
             this.Controls.Add(this.botaonovo);
             this.Controls.Add(this.buscarbotao);
             this.Controls.Add(this.listusuario);
@@ -171,6 +204,7 @@
             this.Controls.Add(this.labelnome);
             this.Name = "Form1";
             this.Text = "Form1";
+            this.contextMenuStrip1.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -192,6 +226,9 @@
         private System.ComponentModel.BackgroundWorker backgroundWorker2;
         private System.Windows.Forms.Button buscarbotao;
         private System.Windows.Forms.Button botaonovo;
+        private System.Windows.Forms.Button botaoexcluir;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip1;
+        private System.Windows.Forms.ToolStripMenuItem menuexcluir;
     }
 }
 

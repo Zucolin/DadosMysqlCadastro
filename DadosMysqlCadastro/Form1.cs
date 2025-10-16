@@ -48,7 +48,25 @@ namespace DadosMysqlCadastro
                 textemail.Text = item.SubItems[2].Text;
                 textsenha.Text = item.SubItems[3].Text;
 
+                botaoexcluir.Visible = true;
+
             }
+        }
+        private void botaonovo_Click(object sender, EventArgs e)
+        {
+            Reset();
+        }
+        public void Reset()
+        {
+            id_usuario_selecionado = null;
+
+            textnome.Text = String.Empty;
+            textnome.Text = "";
+            textemail.Text = "";
+            textsenha.Text = "";
+
+            textnome.Focus();
+            botaoexcluir.Visible = false;
         }
         private void botao_Click(object sender, EventArgs e)
         {
@@ -72,7 +90,7 @@ namespace DadosMysqlCadastro
                     cmd.Prepare();
                     cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("Contato Inserido com Sucesso!",
+                    MessageBox.Show("Usuario Inserido com Sucesso!",
                         "Sucesso!", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                 }
@@ -88,7 +106,7 @@ namespace DadosMysqlCadastro
                     cmd.Prepare();
                     cmd.ExecuteNonQuery();
 
-                    MessageBox.Show("Contato Atualizado com sucesso!",
+                    MessageBox.Show("Usuario Atualizado com sucesso!",
                         "Sucesso!", MessageBoxButtons.OK,
                         MessageBoxIcon.Information);
                 }
@@ -205,16 +223,61 @@ namespace DadosMysqlCadastro
             finally { Conexao.Close(); }
         }
 
-        private void botaonovo_Click(object sender, EventArgs e)
-        {
-            id_usuario_selecionado = null;
-            
-            textnome.Text= String.Empty;
-            textnome.Text = "";
-            textemail.Text = "";
-            textsenha.Text = "";
 
-            textnome.Focus();
+
+        private void menuexcluir_Click_1(object sender, EventArgs e)
+        {
+            ExcluirUsuario();
         }
+        private void botaoexcluir_Click(object sender, EventArgs e)
+        {
+            ExcluirUsuario();
+
+        }
+        public void ExcluirUsuario()
+        {
+            try
+            {
+                DialogResult conf = MessageBox.Show("Tem certeza que deseja excluir?", "Confirma?", MessageBoxButtons.YesNo, MessageBoxIcon.Question);
+                if (conf == DialogResult.Yes)
+                {
+                    Conexao = new MySqlConnection(data_source);
+                    Conexao.Open();
+                    MySqlCommand cmd = new MySqlCommand();
+                    cmd.Connection = Conexao;
+
+                    cmd.CommandText = "DELETE FROM usuario WHERE id=@id ";
+
+
+
+                    cmd.Parameters.AddWithValue("@id", id_usuario_selecionado);
+                    cmd.Prepare();
+                    cmd.ExecuteNonQuery();
+                    carregar_usuarios();
+                    MessageBox.Show("Usuario Excluido com sucesso!",
+                        "Sucesso!", MessageBoxButtons.OK,
+                        MessageBoxIcon.Information);
+
+                    Reset();
+
+                }
+            }
+            catch (MySqlException ex)
+            {
+                MessageBox.Show("Erro ocorrido: " + ex.Message,
+                    "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show("Erro ocorrido: " + ex.Message,
+                  "Erro", MessageBoxButtons.OK, MessageBoxIcon.Error);
+            }
+            finally
+            {
+                Conexao.Close();
+            }
+        }
+
+        
     }
 }
