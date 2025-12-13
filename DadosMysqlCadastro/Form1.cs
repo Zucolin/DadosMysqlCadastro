@@ -229,11 +229,7 @@ namespace DadosMysqlCadastro
         {
             ExcluirUsuario();
         }
-        private void botaoexcluir_Click(object sender, EventArgs e)
-        {
-            ExcluirUsuario();
 
-        }
         public void ExcluirUsuario()
         {
             try
@@ -278,6 +274,9 @@ namespace DadosMysqlCadastro
             }
         }
 
-        
+        private void botaoexcluir_Click_1(object sender, EventArgs e)
+        {
+            ExcluirUsuario();
+        }
     }
 }

@@ -39,13 +39,13 @@
             this.label1 = new System.Windows.Forms.Label();
             this.textbusca = new System.Windows.Forms.TextBox();
             this.listusuario = new System.Windows.Forms.ListView();
+            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.menuexcluir = new System.Windows.Forms.ToolStripMenuItem();
             this.backgroundWorker1 = new System.ComponentModel.BackgroundWorker();
             this.backgroundWorker2 = new System.ComponentModel.BackgroundWorker();
             this.buscarbotao = new System.Windows.Forms.Button();
             this.botaonovo = new System.Windows.Forms.Button();
             this.botaoexcluir = new System.Windows.Forms.Button();
-            this.contextMenuStrip1 = new System.Windows.Forms.ContextMenuStrip(this.components);
-            this.menuexcluir = new System.Windows.Forms.ToolStripMenuItem();
             this.contextMenuStrip1.SuspendLayout();
             this.SuspendLayout();
             // 
@@ -136,6 +136,21 @@
             this.listusuario.UseCompatibleStateImageBehavior = false;
             this.listusuario.ItemSelectionChanged += new System.Windows.Forms.ListViewItemSelectionChangedEventHandler(this.listusuario_ItemSelectionChanged);
             // 
+            // contextMenuStrip1
+            // 
+            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
+            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.menuexcluir});
+            this.contextMenuStrip1.Name = "contextMenuStrip1";
+            this.contextMenuStrip1.Size = new System.Drawing.Size(176, 28);
+            // 
+            // menuexcluir
+            // 
+            this.menuexcluir.Name = "menuexcluir";
+            this.menuexcluir.Size = new System.Drawing.Size(175, 24);
+            this.menuexcluir.Text = "Excluir Usuario";
+            this.menuexcluir.Click += new System.EventHandler(this.menuexcluir_Click_1);
+            // 
             // buscarbotao
             // 
             this.buscarbotao.BackColor = System.Drawing.Color.YellowGreen;
@@ -168,21 +183,7 @@
             this.botaoexcluir.TabIndex = 12;
             this.botaoexcluir.Text = "Excluir";
             this.botaoexcluir.UseVisualStyleBackColor = false;
-            // 
-            // contextMenuStrip1
-            // 
-            this.contextMenuStrip1.ImageScalingSize = new System.Drawing.Size(20, 20);
-            this.contextMenuStrip1.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.menuexcluir});
-            this.contextMenuStrip1.Name = "contextMenuStrip1";
-            this.contextMenuStrip1.Size = new System.Drawing.Size(176, 28);
-            // 
-            // menuexcluir
-            // 
-            this.menuexcluir.Name = "menuexcluir";
-            this.menuexcluir.Size = new System.Drawing.Size(175, 24);
-            this.menuexcluir.Text = "Excluir Usuario";
-            this.menuexcluir.Click += new System.EventHandler(this.menuexcluir_Click_1);
+            this.botaoexcluir.Click += new System.EventHandler(this.botaoexcluir_Click_1);
             // 
             // Form1
             // 
